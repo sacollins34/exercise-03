@@ -7,8 +7,6 @@ editor: visual
 
 # **Exercise 03:** Explore and Wrangle Data
 
-### **Questions and Note:**
-
 ## **Preliminaries**
 
 I uploaded my data set using the {tidyverse} package. I used the file from the web ("https://") and used read_csv. This automatically creates my data table as tibble.
@@ -55,7 +53,7 @@ I created a scatterplot using the {ggplot2} package to plot the relationship bet
 
 ```{r}
 p <- ggplot(data = d, aes(x = Move, y = DayLength_km, color = factor(Family)))
-p <- p + xlab("Time Spent Moving") + ylab("Day Range Length (km)")
+p <- p + xlab("Time Spent Moving (Time)") + ylab("Day Range Length (km)")
 p <- p + geom_point(na.rm = TRUE)
 p <- p + theme(legend.position = "bottom", legend.title = element_blank())
 p
@@ -63,26 +61,7 @@ p
 
 ```{r}
 p <- ggplot(data = d, aes(x = Move, y = DayLength_km, color = factor(Family)))
-p <- p + xlab("Time Spent Moving") + ylab("Day Range Length (km)")
-p <- p + geom_point(na.rm = TRUE)
-p <- p + theme(legend.position = "bottom", legend.title = element_blank())
-p <- p + facet_wrap(~Family, ncol = 4)
-p
-```
-
-Below are the same scatterplots showing the relationship between day range length (y axis) vs. time spent moving (x axis) but the data has been log transformed.
-
-```{r}
-p <- ggplot(data = d, aes(x = log(Move), y = log(DayLength_km), color = factor(Family)))
-p <- p + xlab("Log(Time Spent Moving)") + ylab("Log(Day Range Length (km))")
-p <- p + geom_point(na.rm = TRUE)
-p <- p + theme(legend.position = "bottom", legend.title = element_blank())
-p
-```
-
-```{r}
-p <- ggplot(data = d, aes(x = log(Move), y = log(DayLength_km), color = factor(Family)))
-p <- p + xlab("Log(Time Spent Moving)") + ylab("Log(Day Range Length (km))")
+p <- p + xlab("Time Spent Moving (Time)") + ylab("Day Range Length (km)")
 p <- p + geom_point(na.rm = TRUE)
 p <- p + theme(legend.position = "bottom", legend.title = element_blank())
 p <- p + facet_wrap(~Family, ncol = 4)
@@ -110,19 +89,19 @@ p <- p + facet_wrap(~Family, ncol = 4)
 p
 ```
 
-Below are the same scatterplots showing the relationship between day range length (y axis) vs. group size (x axis) but the data has been log transformed.
+Below are the same scatterplots showing the relationship between day range length (y axis) vs. group size (x axis) but the data has been log transformed group size.
 
 ```{r}
-p <- ggplot(data = d, aes(x = log(MeanGroupSize), y = log(DayLength_km), color = factor(Family)))
-p <- p + xlab("Log(Group Size)") + ylab("Log(Day Range Length (km))")
+p <- ggplot(data = d, aes(x = log(MeanGroupSize), y = DayLength_km, color = factor(Family)))
+p <- p + xlab("Log(Group Size)") + ylab("Day Range Length (km)")
 p <- p + geom_point(na.rm = TRUE)
 p <- p + theme(legend.position = "bottom", legend.title = element_blank())
 p
 ```
 
 ```{r}
-p <- ggplot(data = d, aes(x = log(MeanGroupSize), y = log(DayLength_km), color = factor(Family)))
-p <- p + xlab("Log(Group Size)") + ylab("Log(Day Range Length (km))")
+p <- ggplot(data = d, aes(x = log(MeanGroupSize), y = DayLength_km, color = factor(Family)))
+p <- p + xlab("Log(Group Size)") + ylab("Day Range Length (km)")
 p <- p + geom_point(na.rm = TRUE)
 p <- p + theme(legend.position = "bottom", legend.title = element_blank())
 p <- p + facet_wrap(~Family, ncol = 4)
