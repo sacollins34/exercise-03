@@ -1,0 +1,221 @@
+---
+title: "EDA-challenge"
+author: "Stephen Collins"
+format: html
+editor: visual
+---
+
+# **Exercise 03:** Explore and Wrangle Data
+
+### **Questions and Note:**
+
+## **Preliminaries**
+
+I uploaded my data set using the {tidyverse} package. I used the file from the web ("https://") and used read_csv. This automatically creates my data table as tibble.
+
+```{r}
+library(tidyverse)
+f <- "https://raw.githubusercontent.com/difiore/ada-datasets/refs/heads/main/data-wrangling.csv"
+d <- read_csv(f, col_names = TRUE)
+
+glimpse(d)
+```
+
+### Question 1
+
+I created new variable that was named **BSD** (body size dimorphism) using the {base} package. This was a ratio of the average male to female body mass.
+
+```{r}
+d$BSD <- d$Body_mass_male_mean / d$Body_mass_female_mean
+head(d$BSD)
+```
+
+## Question 2
+
+I created another variable that was named **sex_ratio** using the {base} package. This was the ratio of the number of adult females to adult males.
+
+```{r}
+d$sex_ratio <- d$AdultFemale / d$AdultMales
+head(d$sex_ratio)
+```
+
+## Question 3
+
+I created another variable that was named **DI** (“defensibility index”). This was the ratio of day range length to the diameter of the home range. I first had to create another variable named HomeRange_Diameter_km2 to give me the diameter of its "HomeRange_km2". This then allowed me to make my "DI" variable.
+
+```{r}
+d$HomeRange_Diameter_km2 <- sqrt(d$HomeRange_km2/pi)*2
+d$DI <- d$DayLength_km/d$HomeRange_Diameter_km2
+head(d$DI)
+```
+
+## Question 4
+
+I created a scatterplot using the {ggplot2} package to plot the relationship between day range length (y axis) vs. time spent moving (x axis). The first part of my code plots the relationship of the primate species overall. The second part allows me to separate it by family.
+
+```{r}
+p <- ggplot(data = d, aes(x = Move, y = DayLength_km, color = factor(Family)))
+p <- p + xlab("Time Spent Moving") + ylab("Day Range Length (km)")
+p <- p + geom_point(na.rm = TRUE)
+p <- p + theme(legend.position = "bottom", legend.title = element_blank())
+p
+```
+
+```{r}
+p <- ggplot(data = d, aes(x = Move, y = DayLength_km, color = factor(Family)))
+p <- p + xlab("Time Spent Moving") + ylab("Day Range Length (km)")
+p <- p + geom_point(na.rm = TRUE)
+p <- p + theme(legend.position = "bottom", legend.title = element_blank())
+p <- p + facet_wrap(~Family, ncol = 4)
+p
+```
+
+Below are the same scatterplots showing the relationship between day range length (y axis) vs. time spent moving (x axis) but the data has been log transformed.
+
+```{r}
+p <- ggplot(data = d, aes(x = log(Move), y = log(DayLength_km), color = factor(Family)))
+p <- p + xlab("Log(Time Spent Moving)") + ylab("Log(Day Range Length (km))")
+p <- p + geom_point(na.rm = TRUE)
+p <- p + theme(legend.position = "bottom", legend.title = element_blank())
+p
+```
+
+```{r}
+p <- ggplot(data = d, aes(x = log(Move), y = log(DayLength_km), color = factor(Family)))
+p <- p + xlab("Log(Time Spent Moving)") + ylab("Log(Day Range Length (km))")
+p <- p + geom_point(na.rm = TRUE)
+p <- p + theme(legend.position = "bottom", legend.title = element_blank())
+p <- p + facet_wrap(~Family, ncol = 4)
+p
+```
+
+## Question 5
+
+I created a scatterplot using the {ggplot2} package to plot the relationship between day range length (y axis) vs. group size (x axis). The first part of my code plots the relationship of the primate species overall. The second part allows me to separate it by family.
+
+```{r}
+p <- ggplot(data = d, aes(x = MeanGroupSize, y = DayLength_km, color = factor(Family)))
+p <- p + xlab("Group Size") + ylab("Day Range Length (km)")
+p <- p + geom_point(na.rm = TRUE)
+p <- p + theme(legend.position = "bottom", legend.title = element_blank())
+p
+```
+
+```{r}
+p <- ggplot(data = d, aes(x = MeanGroupSize, y = DayLength_km, color = factor(Family)))
+p <- p + xlab("Group Size") + ylab("Day Range Length (km)")
+p <- p + geom_point(na.rm = TRUE)
+p <- p + theme(legend.position = "bottom", legend.title = element_blank())
+p <- p + facet_wrap(~Family, ncol = 4)
+p
+```
+
+Below are the same scatterplots showing the relationship between day range length (y axis) vs. group size (x axis) but the data has been log transformed.
+
+```{r}
+p <- ggplot(data = d, aes(x = log(MeanGroupSize), y = log(DayLength_km), color = factor(Family)))
+p <- p + xlab("Log(Group Size)") + ylab("Log(Day Range Length (km))")
+p <- p + geom_point(na.rm = TRUE)
+p <- p + theme(legend.position = "bottom", legend.title = element_blank())
+p
+```
+
+```{r}
+p <- ggplot(data = d, aes(x = log(MeanGroupSize), y = log(DayLength_km), color = factor(Family)))
+p <- p + xlab("Log(Group Size)") + ylab("Log(Day Range Length (km))")
+p <- p + geom_point(na.rm = TRUE)
+p <- p + theme(legend.position = "bottom", legend.title = element_blank())
+p <- p + facet_wrap(~Family, ncol = 4)
+p
+```
+
+## Question 6
+
+I created a scatterplot using the {ggplot2} package to plot the relationship between canine size dimorphism (y axis) vs body size dimorphism (x axis). The first part of my code plots the relationship of the primate species overall. The second part allows me to separate it by family.
+
+```{r}
+p <- ggplot(data = d, aes(x = BSD, y = Canine_Dimorphism, color = factor(Family)))
+p <- p + xlab("Body Size Dimorphism") + ylab("Canine Size Dimorphism")
+p <- p + geom_point(na.rm = TRUE)
+p <- p + theme(legend.position = "bottom", legend.title = element_blank())
+p
+```
+
+```{r}
+p <- ggplot(data = d, aes(x = BSD, y = Canine_Dimorphism, color = factor(Family)))
+p <- p + xlab("Body Size Dimorphism") + ylab("Canine Size Dimorphism")
+p <- p + geom_point(na.rm = TRUE)
+p <- p + theme(legend.position = "bottom", legend.title = element_blank())
+p <- p + facet_wrap(~Family, ncol = 4)
+p
+```
+
+## Question 7
+
+I created new variable that was named **diet_strategy** using the following criteria.
+
+-   "frugivore” if fruits make up \>50%
+
+-   “folivore” if leaves make up \>50% of the diet,
+
+-   “omnivore” if diet data are available, but neither of these is true (i.e., these values are not NA)
+
+```{r}
+d <- mutate(d, diet_strategy = paste(case_when(Fruit >= 50 ~ "frugivore", 
+                                               Leaves >= 50 ~ "folivore",
+                                               Fruit < 50 ~ "omnivore",
+                                               Leaves < 50 ~ "omnivore")))
+list(d$diet_strategy)
+```
+
+I next created boxplots of the group size for species with different dietary strategies. I was able to filter out only those who only were "frugivore", "folivore", or "omnivore."
+
+```{r}
+ds <- filter(d, diet_strategy == "frugivore" | 
+               diet_strategy == "folivore"|
+               diet_strategy == "omnivore")
+
+p <- ggplot(data = ds, aes(x = diet_strategy , y = log(MeanGroupSize)))
+p <- p + geom_boxplot(na.rm = TRUE)
+p <- p + geom_point(na.rm = TRUE)
+p <- p +  theme(axis.text.x = element_text(angle = 0))
+p <- p +  ylab("log(MeanGroupSize)")
+p <- p +  xlab("Diet Strategy")
+p
+```
+
+### Question 8
+
+In one line of code I tried using {dplyr} verbs, along with the forward pipe (\|\> or %\>%) operator to do the following:
+
+-   Add a variable called **Binomial** to the data frame **d**
+
+    -   This should be a concatenation of the **Genus** and **Species** variables…
+
+-   Trim the data frame to only include the variables
+
+    -   **Binomial**
+
+    -   **Family**
+
+    -   **Brain_size_species_mean**
+
+    -   **Body_mass_male_mean**
+
+-   Group these variables by **Family**
+
+-   Calculate the average value for **Brain_size_species_mean** and **Body_mass_male_mean** per **Family**
+
+-   Arrange the data by *increasing* average brain size
+
+```{r}
+d <- d %>%
+  mutate(Binomial = paste(Genus, Species, sep = " ")) %>%
+  select(Binomial, Family, Brain_Size_Species_Mean, Body_mass_male_mean) %>%
+  group_by(Family) %>%
+  summarize(Average_Brain_Size = mean(Brain_Size_Species_Mean, na.rm = TRUE), 
+            Average_Male_Body_Mass = mean(Body_mass_male_mean, na.rm = TRUE)) %>%
+  arrange(Average_Brain_Size)
+
+head(d)
+```
